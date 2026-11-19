@@ -1,0 +1,6 @@
+import {useRef,useState,useEffect} from 'react'
+import {useInView,useScroll,useTransform} from 'framer-motion'
+export function useParallax(){const ref=useRef(null);const {scrollYProgress}=useScroll({target:ref,offset:['start start','end start']});return {ref,y:useTransform(scrollYProgress,[0,1],[0,100])}}
+export function useMagnetic(){const ref=useRef(null);const [xy,setXY]=useState({x:0,y:0});return {ref,style:{x:xy.x,y:xy.y},onMouseMove:e=>{const r=e.currentTarget.getBoundingClientRect();setXY({x:(e.clientX-r.left-r.width/2)*.15,y:(e.clientY-r.top-r.height/2)*.15})},onMouseLeave:()=>setXY({x:0,y:0})}}
+export function useReveal(){const ref=useRef(null);const visible=useInView(ref,{once:true,amount:.15});return {ref,initial:{opacity:0,y:30},animate:visible?{opacity:1,y:0}:{opacity:0,y:30},transition:{duration:.8,ease:[.16,1,.3,1]}}}
+export function useCounter(target=0){const ref=useRef(null);const visible=useInView(ref,{once:true});const [value,setValue]=useState(0);useEffect(()=>{if(!visible)return;let start=0;const step=Math.max(1,Math.ceil(target/60));const id=setInterval(()=>{start=Math.min(target,start+step);setValue(start);if(start>=target)clearInterval(id)},16);return()=>clearInterval(id)},[visible,target]);return {ref,value}}

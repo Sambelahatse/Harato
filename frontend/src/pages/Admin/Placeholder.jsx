@@ -1,0 +1,1 @@
+export default function Placeholder({title,description}){return <section className="rounded-2xl bg-white p-8 shadow-sm"><h2 className="font-display text-2xl font-black text-navy">{title}</h2><p className="mt-3 max-w-xl text-sm leading-7 text-slate-500">{description}</p></section>}

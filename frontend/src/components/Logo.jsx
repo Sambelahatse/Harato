@@ -1,0 +1,2 @@
+import {motion} from 'framer-motion'
+export default function Logo({size=48}){return <motion.img src="/assets/logo.jpg" alt="Logo HARATO" style={{width:size,height:size}} className="rounded-full border-2 border-gold object-cover shadow-gold" animate={{filter:['drop-shadow(0 0 0px rgba(212,175,55,0))','drop-shadow(0 0 12px rgba(212,175,55,.5))','drop-shadow(0 0 0px rgba(212,175,55,0))']}} transition={{duration:3,repeat:Infinity}}/>}
