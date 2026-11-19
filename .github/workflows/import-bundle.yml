@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
     paths:
-      - harato-source.tar.gz.b64
+      - harato-bundle.trigger
 permissions:
   contents: write
 jobs:
@@ -16,17 +16,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Unpack project into repository root
         run: |
-          python - <<'PY'
-          import base64, os, tarfile
-          with open("harato-source.tar.gz.b64", "rb") as f:
-              payload = base64.b64decode(f.read())
-          with open("/tmp/harato-source.tar.gz", "wb") as f:
-              f.write(payload)
-          with tarfile.open("/tmp/harato-source.tar.gz", "r:gz") as archive:
-              archive.extractall(".", filter="data")
-          os.remove("harato-source.tar.gz.b64")
-          os.remove(".github/workflows/import-bundle.yml")
-          PY
+          cat harato-bundle-*.part | base64 -d > /tmp/harato-source.tar.gz
+          tar -xzf /tmp/harato-source.tar.gz
+          rm -f harato-bundle-*.part harato-bundle.trigger
+          rm -f .github/workflows/import-bundle.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
